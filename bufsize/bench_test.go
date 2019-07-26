@@ -13,7 +13,7 @@ import (
 var result [][]byte
 
 func BenchmarkBufferSize(b *testing.B) {
-	conn4KB, conn8KB, conn1MB := connect(4), connect(8), connect(1024)
+	conn4KB, conn8KB, conn16KB, conn1MB := connect(4), connect(8), connect(16), connect(1024)
 	ctx := context.Background()
 
 	setupDB(conn4KB)
@@ -24,6 +24,10 @@ func BenchmarkBufferSize(b *testing.B) {
 
 	b.Run("8KB", func(b *testing.B) {
 		result = selectBench(b, ctx, conn8KB)
+	})
+
+	b.Run("16KB", func(b *testing.B) {
+		result = selectBench(b, ctx, conn16KB)
 	})
 
 	b.Run("1MB", func(b *testing.B) {
